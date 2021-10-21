@@ -30,9 +30,24 @@ void maptel_erase(unsigned long id, char const *tel_src) {
 void maptel_transform(unsigned long id, char const *tel_src, char *tel_dst, size_t len) {
     if (dicts.at(id).count(tel_src) == 0) {
         memcpy(tel_dst, tel_src, TEL_NUM_MAX_LEN);
+        return;
     }
 
-    // TODO
+    char *tmp_src = (char*) tel_src;
+    char *tmp_dst = tel_dst;
+
+    // dopoki nie znajdziemy pętli
+    while (tmp_dst != tel_src) {
+        tmp_src = tmp_dst;
+        tmp_dst = (char*) dicts.at(id).at((const char*) tmp_dst);
+    }
+
+    if (tmp_dst == tel_src) {
+        memcpy(tel_dst, tel_src, TEL_NUM_MAX_LEN);
+        return;
+    } 
+
+    memcpy(tel_dst, tmp_dst, TEL_NUM_MAX_LEN);
 }
 
 int main(void) {

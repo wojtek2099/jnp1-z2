@@ -6,14 +6,14 @@ using namespace std;
 
 const size_t TEL_NUM_MAX_LEN = 22;
 
-unordered_map<unsigned long, unordered_map<const char*, const char*> > dicts;
+unordered_map<unsigned long, unordered_map<char const*, char const*> > dicts;
 
 namespace jnp1 {
 extern "C" {
     // todo: jak indeksować słowniki?
     unsigned long maptel_create(void) {
         unsigned long id = 0;
-        dicts.insert(make_pair(id, unordered_map<const char*, const char*>()));
+        dicts.insert(make_pair(id, unordered_map<char const*, char const*>()));
         return id;
     }
 
@@ -32,7 +32,7 @@ extern "C" {
     // todo: jak rozumieć specyfikacje tej funkcji?
     void maptel_transform(unsigned long id, char const *tel_src, char *tel_dst, size_t len) {
         try {
-            unordered_map<const char*, const char*> dict;
+            unordered_map<char const*, char const*> dict;
             
 
             dict = dicts.at(id);

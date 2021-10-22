@@ -1,6 +1,8 @@
 #ifndef __MAPTEL_H__
 #define __MAPTEL_H__
 
+#include <stddef.h>
+
 #ifdef __cplusplus
 namespace jnp1 {
 extern "C" {

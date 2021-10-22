@@ -9,7 +9,6 @@ const size_t TEL_NUM_MAX_LEN = 22;
 unordered_map<unsigned long, unordered_map<const char*, const char*> > dicts;
 
 namespace jnp1 {
-
 extern "C" {
     // todo: jak indeksować słowniki?
     unsigned long maptel_create(void) {
@@ -61,5 +60,4 @@ extern "C" {
         }
     }
 }
-
 }

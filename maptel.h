@@ -1,6 +1,11 @@
 #ifndef __MAPTEL_H__
 #define __MAPTEL_H__
 
+#ifdef __cplusplus
+namespace jnp1 {
+extern "C" {
+#endif
+
 // Stała rezprezentująca maksymalną długość numeru telefonu.
 const size_t TEL_NUM_MAX_LEN = 22;
 
@@ -24,5 +29,10 @@ void maptel_erase(unsigned long id, char const *tel_src);
 // numer tel_src. Wartość len to rozmiar przydzielonej pamięci wskazywanej
 // przez tel_dst.
 void maptel_transform(unsigned long id, char const *tel_src, char *tel_dst, size_t len);
+
+#ifdef __cplusplus
+}
+}
+#endif
 
 #endif /* __MAPTEL_H__ */

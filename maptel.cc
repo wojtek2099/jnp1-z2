@@ -3,13 +3,10 @@
 #include <assert.h>
 #include <string>
 #include <string.h>
-
 #include <set>
 #include "maptel.h"
 
 using namespace std;
-
-static unsigned long max_id = 0;
 
 unordered_map<unsigned long, unordered_map<string, string> >& dicts() {
     static unordered_map<unsigned long, unordered_map<string, string> > dicts;
@@ -17,6 +14,8 @@ unordered_map<unsigned long, unordered_map<string, string> >& dicts() {
 }
 
 namespace {
+    unsigned long max_id = 0;
+
     bool has_loop(unsigned long id, char const *tel_src) {
         unordered_map<string, string>& dict = dicts().at(id);
 
@@ -41,8 +40,8 @@ namespace {
 }
 
 unsigned long jnp1::maptel_create(void) {
-    dicts().insert(make_pair(max_id, unordered_map<string, string>()));
-    return max_id++;
+    dicts().insert(make_pair(::max_id, unordered_map<string, string>()));
+    return ::max_id++;
 }
 
 void jnp1::maptel_delete(unsigned long id) {
@@ -58,10 +57,8 @@ void jnp1::maptel_erase(unsigned long id, char const *tel_src) {
     dicts().at(id).erase(string(tel_src));
 }
 
-// todo: jak rozumieć specyfikacje tej funkcji?
-// czy lepiej robic na stringach czy wskaznikach na char?
 void jnp1::maptel_transform(unsigned long id, char const *tel_src, char *tel_dst, size_t len) {
-    // try {
+    try {
         unordered_map<string, string>& dict = dicts().at(id);
 
         if (dict.count(string(tel_src)) == 0) {
@@ -71,9 +68,6 @@ void jnp1::maptel_transform(unsigned long id, char const *tel_src, char *tel_dst
 
         string tmp_src(tel_src);
         string tmp_dst(dict.at(tmp_src));
-
-        // bool has_loop = ::has_loop(id, tel_src);
-        // if (has_loop) cout << "HAS loop\n";
 
         if (::has_loop(id, tel_src)) {
             strncpy(tel_dst, tel_src, len);
@@ -87,8 +81,7 @@ void jnp1::maptel_transform(unsigned long id, char const *tel_src, char *tel_dst
 
         strncpy(tel_dst, tmp_dst.c_str(), len);
 
-    // } catch (out_of_range& oor) {
-    //     cerr << "OOR error: " << oor.what() << endl;
-    //     // cout << "key " << id << " not found??" << endl;
-    // }
+    } catch (out_of_range& oor) {
+        cerr << "OOR error: " << oor.what() << endl;
+    }
 }

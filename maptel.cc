@@ -9,12 +9,35 @@
 
 using namespace std;
 
-// static unordered_map<unsigned long, unordered_map<string, string> > dicts;
 static unsigned long max_id = 0;
 
 unordered_map<unsigned long, unordered_map<string, string> >& dicts() {
     static unordered_map<unsigned long, unordered_map<string, string> > dicts;
     return dicts;
+}
+
+namespace {
+    bool has_loop(unsigned long id, char const *tel_src) {
+        unordered_map<string, string>& dict = dicts().at(id);
+
+        string a(tel_src);
+        string b = a;
+        if (dict.count(a) == 0) {
+            return false;
+        }
+
+        while (true) {
+            a = dict.at(a);
+            if (dict.count(a) == 0) return false;
+
+            b = dict.at(b);
+            if (dict.count(b) == 0) return false;
+            b = dict.at(b);
+            if (dict.count(b) == 0) return false;
+
+            if (a == b) return true;
+        }   
+    }
 }
 
 unsigned long jnp1::maptel_create(void) {
@@ -28,8 +51,7 @@ void jnp1::maptel_delete(unsigned long id) {
 }
 
 void jnp1::maptel_insert(unsigned long id, char const *tel_src, char const *tel_dst) {
-    
-    dicts().at(id).insert(make_pair(string(tel_src), string(tel_dst)));
+    dicts().at(id).insert_or_assign(string(tel_src), string(tel_dst));
 }
 
 void jnp1::maptel_erase(unsigned long id, char const *tel_src) {
@@ -39,7 +61,7 @@ void jnp1::maptel_erase(unsigned long id, char const *tel_src) {
 // todo: jak rozumieć specyfikacje tej funkcji?
 // czy lepiej robic na stringach czy wskaznikach na char?
 void jnp1::maptel_transform(unsigned long id, char const *tel_src, char *tel_dst, size_t len) {
-    try {
+    // try {
         unordered_map<string, string>& dict = dicts().at(id);
 
         if (dict.count(string(tel_src)) == 0) {
@@ -50,22 +72,23 @@ void jnp1::maptel_transform(unsigned long id, char const *tel_src, char *tel_dst
         string tmp_src(tel_src);
         string tmp_dst(dict.at(tmp_src));
 
-        // todo: zmienić na szukanie pętli za pomocy wskaźnikow
-        set<string> visited;
+        // bool has_loop = ::has_loop(id, tel_src);
+        // if (has_loop) cout << "HAS loop\n";
 
-        while (visited.count(tmp_dst) == 0 && dict.count(tmp_dst) != 0) {
-            visited.insert(tmp_src);
+        if (::has_loop(id, tel_src)) {
+            strncpy(tel_dst, tel_src, len);
+            return;
+        }
+
+        while (dict.count(tmp_dst) != 0) {
             tmp_src = tmp_dst;
             tmp_dst = dict.at(tmp_src);
         }
 
-        if (visited.count(tmp_dst) != 0) {
-            strncpy(tel_dst, tel_src, min(len, jnp1::TEL_NUM_MAX_LEN+1));
-        } else {
-            strncpy(tel_dst, tmp_dst.c_str(), min(len, jnp1::TEL_NUM_MAX_LEN+1));
-        }
-    } catch (out_of_range& oor) {
-        cerr << "OOR error: " << oor.what() << endl;
-        // cout << "key " << id << " not found??" << endl;
-    }
+        strncpy(tel_dst, tmp_dst.c_str(), len);
+
+    // } catch (out_of_range& oor) {
+    //     cerr << "OOR error: " << oor.what() << endl;
+    //     // cout << "key " << id << " not found??" << endl;
+    // }
 }

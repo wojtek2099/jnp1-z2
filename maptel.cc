@@ -33,7 +33,7 @@ namespace {
             current_char_num++;
             current_char = candidate[current_char_num];
         }
-        if (current_char != 0) {
+        if (current_char != 0 || current_char_num == 0) {
             result = false;
         }
         return result;
@@ -101,7 +101,7 @@ void maptel_erase(unsigned long id, char const *tel_src) {
         cerr << "maptel: maptel_erase(" << id << ", " << tel_src << ")" << endl;
     }
     assert(::dicts().find(id) != ::dicts().end());
-    assert(::is_correct_number(tel_src));
+    assert(tel_src != NULL && ::is_correct_number(tel_src));
     // presume that function's parameters are correct
 
     size_t erase_res = dicts().at(id).erase(string(tel_src));
@@ -164,7 +164,7 @@ void maptel_transform(unsigned long id, char const *tel_src, char *tel_dst, size
         }        
     }
     
-    assert(result.length() <= len);
+    assert(result.length() < len);
     //enough space to:
     strncpy(tel_dst, result.c_str(), len);
     if (debug) {

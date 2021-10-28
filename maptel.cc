@@ -101,6 +101,7 @@ void maptel_erase(unsigned long id, char const *tel_src) {
         cerr << "maptel: maptel_erase(" << id << ", " << tel_src << ")" << endl;
     }
     assert(::dicts().find(id) != ::dicts().end());
+    assert(::is_correct_number(tel_src));
     // presume that function's parameters are correct
 
     size_t erase_res = dicts().at(id).erase(string(tel_src));

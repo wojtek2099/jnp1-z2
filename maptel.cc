@@ -14,8 +14,6 @@ unordered_map<unsigned long, unordered_map<string, string> >& dicts() {
 }
 
 namespace {
-    unsigned long max_id = 0;
-
     bool has_loop(unsigned long id, char const *tel_src) {
         unordered_map<string, string>& dict = dicts().at(id);
 
@@ -40,8 +38,9 @@ namespace {
 }
 
 unsigned long jnp1::maptel_create(void) {
-    dicts().insert(make_pair(::max_id, unordered_map<string, string>()));
-    return ::max_id++;
+    static unsigned long max_id = 0;
+    dicts().insert(make_pair(max_id, unordered_map<string, string>()));
+    return max_id++;
 }
 
 void jnp1::maptel_delete(unsigned long id) {

@@ -1,10 +1,13 @@
-#ifndef __MAPTEL_H__
-#define __MAPTEL_H__
+// Autorzy: Paweł Olejnik (po417770), Michał Maszkowski (mm421428)
+
+#ifndef MAPTEL_H
+#define MAPTEL_H
 
 #ifdef __cplusplus
+    #include <iostream>
     #include <cstddef>
     namespace jnp1 {
-    extern "C" {
+        extern "C" {
 #else
     #include <stddef.h>
 #endif
@@ -16,6 +19,7 @@ const size_t TEL_NUM_MAX_LEN = 22;
 unsigned long maptel_create(void);
 
 // Usuwa słownik o identyfikatorze id.
+// (Jeśli nie ma takiego to przy niezdefiniowanym NDEBUG wypisuje błąd)
 void maptel_delete(unsigned long id);
 
 // Wstawia do słownika o identyfikatorze id informację o zmianie numeru
@@ -34,8 +38,8 @@ void maptel_erase(unsigned long id, char const *tel_src);
 void maptel_transform(unsigned long id, char const *tel_src, char *tel_dst, size_t len);
 
 #ifdef __cplusplus
-    }
+        }
     }
 #endif
 
-#endif /* __MAPTEL_H__ */
+#endif /* MAPTEL_H */

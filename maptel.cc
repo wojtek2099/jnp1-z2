@@ -1,14 +1,13 @@
+#include "maptel.h"
 #include <iostream>
 #include <unordered_map>
-#include <assert.h>
 #include <string>
-#include <string.h>
-#include <set>
-#include "maptel.h"
+#include <assert.h>
 
 using namespace std;
 
 namespace {
+
     unordered_map<unsigned long, unordered_map<string, string> >& dicts() {
         static unordered_map<unsigned long, unordered_map<string, string> > dicts;
         return dicts;
@@ -35,6 +34,7 @@ namespace {
             if (a == b) return true;
         }   
     }
+
 }
 
 namespace jnp1 {

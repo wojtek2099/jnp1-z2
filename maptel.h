@@ -2,11 +2,11 @@
 #define __MAPTEL_H__
 
 #ifdef __cplusplus
-#include <cstddef>
-namespace jnp1 {
-extern "C" {
+    #include <cstddef>
+    namespace jnp1 {
+    extern "C" {
 #else
-#include <stddef.h>
+    #include <stddef.h>
 #endif
 
 // Stała rezprezentująca maksymalną długość numeru telefonu.
@@ -34,8 +34,8 @@ void maptel_erase(unsigned long id, char const *tel_src);
 void maptel_transform(unsigned long id, char const *tel_src, char *tel_dst, size_t len);
 
 #ifdef __cplusplus
-}
-}
+    }
+    }
 #endif
 
 #endif /* __MAPTEL_H__ */

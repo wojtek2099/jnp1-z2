@@ -26,7 +26,7 @@ namespace {
         bool result = true;
         size_t current_char_num = 0;
         char current_char = candidate[current_char_num];
-        while (result && (current_char_num <= jnp1::TEL_NUM_MAX_LEN) && (current_char != 0)) {
+        while (result && (current_char_num < jnp1::TEL_NUM_MAX_LEN) && (current_char != 0)) {
             if (current_char < '0' ||  current_char > '9') {
                 result = false;
             }
